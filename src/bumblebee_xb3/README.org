@@ -1,0 +1,63 @@
+* Procedure to get a point cloud from the bumblebee xb3
+1. Start ros:
+
+----------------------------------------------------------------------
+$ roscore
+----------------------------------------------------------------------
+
+2. In another terminal tab, launch the camera1394 driver node
+(Ctrl+Shift+Tab to launch a new terminal tab and Alt+tab_number to move to a tab quickly)
+
+-------------------------------------------------------------------------
+$ roslaunch ~/catkin_ws/src/bumblebee_xb3/launch/camera1394_24bit.launch 
+-------------------------------------------------------------------------
+
+For reference, the contents of the above launch file. All it does is start a camera1394 node with some parameters. 
+<!-- -*- mode: XML -*- -->
+<launch>
+<node pkg="camera1394" type="camera1394_node" name="camera1394_node" output="screen">
+    <param name="video_mode" value="format7_mode3" />
+    <param name="format7_color_coding" value="rgb8" />
+    <param name="bayer_pattern" value="gbrg" />
+    <param name="bayer_method" value="" />
+    <param name="frame_id" value="camera_frame" />
+    <param name="frame_rate" value="15.0" />
+    <param name="iso_speed" value="800" />  
+</node>  
+</launch>
+
+once this node is launched, it will publish a interlaced (combined) bayered image which you can view by:
+----------------------------------------------------------------------
+$ rosrun rqt_image_view rqt_image_view image:=/camera/image_raw
+----------------------------------------------------------------------
+
+3. Next run the deinterlacer (& debayering) node. 
+
+----------------------------------------------------------------------
+$ rosrun bumblebee_xb3 bumblebee_xb3_node
+----------------------------------------------------------------------
+
+Now running
+----------------------------------------------------------------------
+$ rostopic list
+----------------------------------------------------------------------
+should show you a lot more image streams, which you can again view with rqt_image_view
+
+4. Now start the stereo_image_proc node in any of the stereo_camera namespaces, say:
+
+-------------------------------------------------------------------------------------
+$ ROS_NAMESPACE=/camera/stereo_camera_LC/ rosrun stereo_image_proc stereo_image_proc
+-------------------------------------------------------------------------------------
+
+You should see that the point cloud topic is now published
+/camera/stereo_camera_LC/points2
+
+5. To view the point cloud, start rviz:
+
+----------------------------------------------------------------------
+$ rosrun rviz rviz
+----------------------------------------------------------------------
+
+SPECIAL NOTE: Observe that up until rviz is started up, stereo_image_proc hardly consumes any processing power, but once rviz is started, it begins to consume prodigious amounts of cpu resources, about 40% of the entire system! This I believe is a bug in the way rviz works. On closing rviz, the cpu utilization again drops back. 
+
+We can combine steps 1-4 into a single launch file, which would make using the stereo camera appear a lot less daunting. 

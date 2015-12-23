@@ -1,0 +1,30 @@
+* DONE camera1394stereo works, but camera1394 segfaults
+e.g.:
+this works
+$ roslaunch camera1394stereo/launch/stereo_camera.launch 
+
+this
+$ roslaunch bumblebee_xb3/launch/camera1394_24bit_test.launch
+results in:
+
+Program received signal SIGSEGV, Segmentation fault.
+__memcpy_sse2_unaligned () at ../sysdeps/x86_64/multiarch/memcpy-sse2-unaligned.S:36
+36	../sysdeps/x86_64/multiarch/memcpy-sse2-unaligned.S: No such file or directory.
+
+(gdb) bt
+#0  __memcpy_sse2_unaligned () at ../sysdeps/x86_64/multiarch/memcpy-sse2-unaligned.S:36
+#1  0x0000000000467d4e in Format7::unpackData(sensor_msgs::Image_<std::allocator<void> >&, unsigned char*) ()
+#2  0x000000000045a284 in camera1394::Camera1394::readData(sensor_msgs::Image_<std::allocator<void> >&) ()
+#3  0x000000000042f2b9 in camera1394_driver::Camera1394Driver::read(boost::shared_ptr<sensor_msgs::Image_<std::allocator<void> > >&) ()
+#4  0x00000000004312af in camera1394_driver::Camera1394Driver::poll() ()
+#5  0x000000000042b63d in main ()
+
+** TODO try reinstalling the sse2 libs
+** TODO try again to use camera1394stereo to publish /camera/image_raw
+right now it doesn't publish this raw image
+** TODO temp solution: use the 2 images published by camera1394stereo for stereo processing
+[2015-08-15 Sat 00:10]
+
+fortunately the images it publishes are from the extreme left and right cameras
+* TODO check that camera1394stereo is picking up the correct calibration files
+[2015-08-15 Sat 00:22]

@@ -1,0 +1,15 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+  <node pkg="camera1394stereo" type="camera1394stereo_node" name="camera1394stereo_node" output="screen" >
+    <param name="video_mode" value="format7_mode3" />
+    <param name="format7_color_coding" value="rgb8" />
+    <param name="bayer_pattern" value="gbrg" />
+    <param name="bayer_method" value="" />
+    <!-- <param name="stereo_method" value="Interlaced" /> -->
+    <!-- <param name="camera_info_url_left" value="" /> -->
+    <!-- <param name="camera_info_url_right" value="" /> -->
+    <param name="frame_id" value="camera_frame" />
+    <param name="frame_rate" value="15.0" />
+    <param name="iso_speed" value="800" />
+  </node>
+</launch>
