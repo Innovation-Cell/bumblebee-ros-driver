@@ -11,7 +11,7 @@
 
 
 	<group>		
-		<!--<node pkg="rosbag" type="play" name="raw_camera_data_player" args="/home/sedrica/bumblebee_ws/src/BagfilesPCL/camera_info.bag /home/revinci/code/workspaces/stereo_ws/src/plane_fitting/data/firstRun/image_raw.bag" />-->
+		<!--<node pkg="rosbag" type="play" name="raw_camera_data_player" args="/home/revinci/code/workspaces/stereo_ws/src/plane_fitting/data/firstRun/camera_info.bag /home/revinci/code/workspaces/stereo_ws/src/plane_fitting/data/firstRun/image_raw.bag" />-->
 		<node pkg="rosbag" type="record" name="pointCloud_recorder" args="-O /home/revinci/code/workspaces/stereo_ws/src/plane_fitting/data/firstRun/$(arg camera_pair).bag /camera/stereo_camera_$(arg camera_pair)/points2" />
 	</group>
 
