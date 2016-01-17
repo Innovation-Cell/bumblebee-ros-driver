@@ -1,6 +1,8 @@
 <!-- -*- mode: XML -*- -->
 <launch>
-	<arg name="camera_pair" default="CR" />
+	<arg name="camera_pair" default="LC" />
+	<arg name="workspace_folder" default="/home/sedrica/bumblebee_ws" />
+	<arg name="input_bagfile_paths" default="$(arg workspace_folder)/src/BagfilesPCL/camera_info.bag" />  
 
 
 	<node pkg="bumblebee_xb3" type="bumblebee_xb3_node" name="bumblebee_xb3_node" />
@@ -11,8 +13,8 @@
 
 
 	<group>		
-		<!--<node pkg="rosbag" type="play" name="raw_camera_data_player" args="/home/sedrica/bumblebee_ws/src/BagfilesPCL/camera_info.bag /home/sedrica/bumblebee_ws/src/BagfilesPCL/image_raw.bag" />-->
-		<node pkg="rosbag" type="record" name="pointCloud_recorder" args="-O /home/sedrica/bumblebee_ws/src/BagfilesPCL/$(arg camera_pair).bag /camera/stereo_camera_$(arg camera_pair)/points2" />
+		<!--<node pkg="rosbag" type="play" name="raw_camera_data_player" args="input_bagfile_paths" />-->
+		<node pkg="rosbag" type="record" name="pointCloud_recorder" args="-O $(arg workspace_folder)/src/BagfilesPCL/$(arg camera_pair).bag /camera/stereo_camera_$(arg camera_pair)/points2" />
 	</group>
 
 </launch>
