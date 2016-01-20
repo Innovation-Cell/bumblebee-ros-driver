@@ -1,7 +1,7 @@
 <!-- -*- mode: XML -*- -->
 <launch>
-	<arg name="workspace_folder" default="/home/rahul/bumblebee_ws" />
-	<arg name="input_bagfile_paths" default="$(arg workspace_folder)/src/BagfilesPCL/camera_info.bag" />  
+	<arg name="workspace_folder" default="/home/sedrica/bumblebee_ws" />
+	<arg name="input_bagfile_paths" default="$(arg workspace_folder)/src/BagfilesPCL/2016-01-10-15-33-57.bag" />  
 
 	<node pkg="bumblebee_xb3" type="bumblebee_xb3_node" name="bumblebee_xb3_node" />
 	
@@ -19,7 +19,7 @@
 
 	<group>		
 		<node pkg="rosbag" type="play" name="raw_camera_data_player" args="$(arg input_bagfile_paths)" />
-		<node pkg="rosbag" type="record" name="pointCloud_recorder" args="-O /home/rahul/bumblebee_ws/src/BagfilesPCL/all_pointClouds.bag /camera/stereo_camera_LC/points2 /camera/stereo_camera_CR/points2 /camera/stereo_camera_LR/points2" />
+		<node pkg="rosbag" type="record" name="pointCloud_recorder" args="-O $(arg workspace_folder)/src/BagfilesPCL/all_pointClouds.bag /camera/stereo_camera_LC/points2 /camera/stereo_camera_CR/points2 /camera/stereo_camera_LR/points2" />
 	</group>
 
 	<!--<node pkg="bumblebee_xb3" type="concatenate" name="concatenator" />-->
